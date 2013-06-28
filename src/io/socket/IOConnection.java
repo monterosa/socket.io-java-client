@@ -102,6 +102,8 @@ class IOConnection implements IOCallback {
 	/** Custom Request headers used while handshaking */
 	private Properties headers;
 
+   private String queryString;
+
 	/**
 	 * The first socket to be connected. the socket.io server does not send a
 	 * connected response to this one.
@@ -295,7 +297,13 @@ class IOConnection implements IOCallback {
 		URLConnection connection;
 		try {
 			setState(STATE_HANDSHAKE);
-			url = new URL(IOConnection.this.url.toString() + SOCKET_IO_1);
+			// url = new URL(IOConnection.this.url.toString() + SOCKET_IO_1);
+         String connectionUrl = IOConnection.this.url.toString() + SOCKET_IO_1;
+         if ( this.queryString != null ) {
+             connectionUrl += "?" + this.queryString;
+         }
+         url = new URL(connectionUrl);
+         
 			connection = url.openConnection();
 			if (connection instanceof HttpsURLConnection) {
 				((HttpsURLConnection) connection)
@@ -407,6 +415,7 @@ class IOConnection implements IOCallback {
 		try {
 			this.url = new URL(url);
 			this.urlStr = url;
+         this.queryString = socket.getQueryString();
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}

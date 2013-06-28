@@ -36,6 +36,8 @@ public class SocketIO {
 
 	private URL url;
 
+   private String queryString;
+
 	/**
 	 * Instantiates a new socket.io connection. The object connects after
 	 * calling {@link #connect(URL, IOCallback)} or
@@ -401,4 +403,12 @@ public class SocketIO {
 			return this.headers.getProperty(key);
 		return null;
 	}
+    
+   public String getQueryString() {
+     return this.queryString;
+   }
+   
+   public void setQueryString(String query) {
+     this.queryString = query;
+   }
 }
